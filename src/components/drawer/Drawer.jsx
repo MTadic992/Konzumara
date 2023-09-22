@@ -1,5 +1,6 @@
 import { Drawer, Button, Stack, Text, Group } from "@mantine/core";
 import ProductCard from "../productCard/ProductCard";
+import { useEffect, useState } from "react";
 
 function CartDrawer({
   data,
@@ -15,13 +16,11 @@ function CartDrawer({
   }
 
   const handleDelete = (id) => {
-    console.log("klik");
     setSelectedItems((prevItems) => prevItems.filter((item) => item.id !== id));
     localStorage.removeItem(`cartItems${id}`);
   };
 
   const handleDeleteAll = () => {
-    console.log("klik");
     setSelectedItems([]);
     localStorage.clear();
   };
@@ -35,6 +34,9 @@ function CartDrawer({
         return item;
       }),
     );
+    const updatedItem = selectedItems.find((item) => item.id === id);
+    updatedItem.quantity += 1;
+    localStorage.setItem(`cartItems${id}`, JSON.stringify(updatedItem));
   };
 
   const handleRemoveOne = (id) => {
@@ -46,7 +48,11 @@ function CartDrawer({
         return item;
       }),
     );
+    const updatedItem = selectedItems.find((item) => item.id === id);
+    updatedItem.quantity += 1;
+    localStorage.setItem(`cartItems${id}`, JSON.stringify(updatedItem));
   };
+
   const getStorageData = () => {
     const items = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -57,7 +63,6 @@ function CartDrawer({
     }
     return items;
   };
-  const items = getStorageData();
 
   return (
     <>

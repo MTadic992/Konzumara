@@ -29,13 +29,23 @@ function HomePage() {
 
   const [cartItems, setCartItems] = useState(selectedItems);
 
+  const getStorageData = () => {
+    const items = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.includes("cartItems")) {
+        items.push(JSON.parse(localStorage.getItem(key)));
+      }
+    }
+    return items;
+  };
+
   useEffect(() => {
-    const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    const savedCartItems = getStorageData();
     if (savedCartItems) {
-      setCartItems(savedCartItems);
+      setSelectedItems(savedCartItems);
     }
   }, []);
-  console.log(cartItems);
 
   const sortedProducts = sortProducts(selectedOption, PRODUCTS);
 

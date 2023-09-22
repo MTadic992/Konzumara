@@ -93,7 +93,7 @@ export const PRODUCTS = [
         id: 16,
         Name: "dinja",
         price: 9.9,
-        productImg: "https://d17zv3ray5yxvp.cloudfront.net/variants/govRG47kwyhQaFwDNaYg3vfH/57ed05bea98bceae5f0eaada26b69cee6c61471d3030f7123d212844a35eba04"
+        productImg: "https://www.biobio.hr/upload/catalog/product/26056/16127.jpg"
     },
 
 ];

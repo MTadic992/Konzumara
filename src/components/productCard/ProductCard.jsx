@@ -14,13 +14,24 @@ function ProductCard({ data, selectedItems, setSelectedItems }) {
           return item;
         }),
       );
+      localStorage.setItem(
+        `cartItems${data.id}`,
+        JSON.stringify({
+          ...existingItem,
+          quantity: existingItem.quantity + 1,
+        }),
+      );
     } else {
       // Ako proizvod nije u košarici, dodaj ga
       setSelectedItems((prevValues) => [
         ...prevValues,
         { ...data, quantity: 1 },
       ]);
-      localStorage.setItem(`cartItems${data.id}`, JSON.stringify(data));
+
+      localStorage.setItem(
+        `cartItems${data.id}`,
+        JSON.stringify({ ...data, quantity: +1 }),
+      );
     }
   };
 
