@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AppShell,
-  Navbar,
   Header,
   Footer,
   Text,
@@ -28,6 +27,37 @@ function HomePage() {
 
   const [selectedOption, setSelectedOption] = useState(null);
 
+  const [cartItems, setCartItems] = useState(selectedItems);
+
+  useEffect(() => {
+    const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    if (savedCartItems) {
+      setCartItems(savedCartItems);
+    }
+  }, []);
+  console.log(cartItems);
+
+  const sortedProducts = sortProducts(selectedOption, PRODUCTS);
+
+  function sortProducts(option, products) {
+    switch (option) {
+      case "option1":
+        return products.slice().sort((a, b) => a.Name.localeCompare(b.Name));
+      case "option2":
+        return products.slice().sort((a, b) => b.Name.localeCompare(a.Name));
+      case "option3":
+        return products.slice().sort((a, b) => b.price - a.price);
+      case "option4":
+        return products.slice().sort((a, b) => a.price - b.price);
+      case "option5":
+        return products.slice().sort((a, b) => b.Name.localeCompare(a.Name));
+      case "option6":
+        return products.slice().sort((a, b) => a.Name.localeCompare(b.Name));
+      default:
+        return products;
+    }
+  }
+
   return (
     <AppShell
       styles={{
@@ -39,16 +69,6 @@ function HomePage() {
         },
       }}
       navbarOffsetBreakpoint="sm"
-      navbar={
-        <Navbar
-          p="md"
-          hiddenBreakpoint="sm"
-          hidden={!opened}
-          width={{ sm: 100, lg: 200 }}
-        >
-          <Text>Application navbar</Text>
-        </Navbar>
-      }
       footer={
         <Footer height={60} p="md">
           Konzumara
@@ -73,9 +93,29 @@ function HomePage() {
                 mr="xl"
               />
             </MediaQuery>
-            <IconShoppingCart fill="red" />
+
             <IconShoppingCart fill="white" />
-            <IconShoppingCart fill="blue" />
+
+            {/* <div style={{ position: "relative" }}>
+              <IconShoppingCart fill="blue" />
+              {selectedItems.length > 0 && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-8px",
+                    right: "-8px",
+                    background: "red",
+                    color: "white",
+                    borderRadius: "50%",
+                    padding: "4px 8px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {selectedItems.length}
+                </div>
+              )}
+            </div> */}
 
             <ShoppingCart
               selectedItems={selectedItems}
@@ -104,10 +144,11 @@ function HomePage() {
         />
       </Group>
       <ProductList
-        data={PRODUCTS.slice(0, displayedProducts)}
+        data={sortedProducts.slice(0, displayedProducts)}
         loadMore={loadMoreProudcts}
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        sortOption={selectedOption}
       />
     </AppShell>
   );

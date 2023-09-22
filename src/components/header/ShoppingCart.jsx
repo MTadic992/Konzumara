@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Badge, Group } from "@mantine/core";
 
 import CartDrawer from "../drawer/Drawer";
 import LoginModal from "../loginModal/LoginModal";
 import RegisterModal from "../registerModal/RegisterModal";
 
-function ShoppingCart({ data, selectedItems, setSelectedItems }) {
+function ShoppingCart({ selectedItems, setSelectedItems }) {
   const [loginOpened, setLoginOpened] = useState(false);
   const [registereOpened, setRegisterOpened] = useState(false);
   const [opened, setOpened] = useState(false);
+  const [cartItems, setCartItems] = useState();
 
   function openLogin() {
     setLoginOpened(true);
@@ -40,7 +41,9 @@ function ShoppingCart({ data, selectedItems, setSelectedItems }) {
           style={{ marginRight: "1rem" }}
           onClick={open}
         >
-          <Badge color="red" size="sm" style={{ marginRight: "0.5rem" }} />
+          <Badge color="red" size="sm" style={{ marginRight: "0.5rem" }}>
+            {selectedItems.length}
+          </Badge>
           Košarica
         </Button>
         <Button size="sm" style={{ marginRight: "1rem" }} onClick={openLogin}>
@@ -53,7 +56,6 @@ function ShoppingCart({ data, selectedItems, setSelectedItems }) {
       <CartDrawer
         opened={opened}
         setOpened={setOpened}
-        data={data}
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
       />

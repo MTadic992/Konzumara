@@ -9,11 +9,10 @@ export default function ProductList({
   selectedItems,
   setSelectedItems,
 }) {
-  console.log(data);
   return (
     <div>
       <Grid columns={4} gutter="xl" m={10}>
-        {data.map((product) => {
+        {data?.map((product) => {
           return (
             <Grid.Col key={product.id} span={1}>
               <ProductCard

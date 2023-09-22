@@ -31,7 +31,7 @@ function LoginModal({ opened, close }) {
       if (error) {
         console.error("Greška pri prijavi:", error.message);
       } else {
-        console.log("Uspešno prijavljeni:", data.user);
+        console.log("Uspješno prijavljeni:", data.user);
       }
     } catch (error) {
       console.error("Greška pri prijavi:", error.message);

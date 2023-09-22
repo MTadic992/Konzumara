@@ -2,13 +2,27 @@ import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
 
 function ProductCard({ data, selectedItems, setSelectedItems }) {
   const handleClick = () => {
-    console.log("click");
-    setSelectedItems((prevValues) => [...prevValues, data]);
-  };
+    const existingItem = selectedItems.find((item) => item.id === data.id);
 
-  // const getSizeCard = (size) => {
-  //   return { padding: "sm", radius: "sm", shadow: "sm" };
-  // };
+    if (existingItem) {
+      // Ako je proizvod već u košarici, povećaj količinu
+      setSelectedItems((prevItems) =>
+        prevItems.map((item) => {
+          if (item.id === data.id) {
+            return { ...item, quantity: item.quantity + 1 };
+          }
+          return item;
+        }),
+      );
+    } else {
+      // Ako proizvod nije u košarici, dodaj ga
+      setSelectedItems((prevValues) => [
+        ...prevValues,
+        { ...data, quantity: 1 },
+      ]);
+      localStorage.setItem(`cartItems${data.id}`, JSON.stringify(data));
+    }
+  };
 
   console.log(selectedItems);
   return (
