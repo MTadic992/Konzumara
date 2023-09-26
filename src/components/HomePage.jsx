@@ -1,25 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   AppShell,
   Header,
   Footer,
   Text,
-  MediaQuery,
-  Burger,
   useMantineTheme,
   Select,
   Group,
+  Button,
 } from "@mantine/core";
 import ShoppingCart from "./header/ShoppingCart";
 import { PRODUCTS } from "../data";
 import ProductList from "../components/productList/ProductList";
 import { IconShoppingCart } from "@tabler/icons-react";
+import LoginModal from "../components/loginModal/LoginModal";
+import RegisterModal from "../components/registerModal/RegisterModal";
+import { AuthContext } from "../context/AuthProvider";
 
 function HomePage() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [displayedProducts, setDisplayedProducts] = useState(8);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [loginOpened, setLoginOpened] = useState(false);
+  const [registereOpened, setRegisterOpened] = useState(false);
+  const { user, signOut } = useContext(AuthContext);
 
   const loadMoreProudcts = () => {
     setDisplayedProducts((prev) => prev + 8);
@@ -68,6 +73,22 @@ function HomePage() {
     }
   }
 
+  function openLogin() {
+    setLoginOpened(true);
+  }
+
+  function closeLogin() {
+    setLoginOpened(false);
+  }
+
+  function openRegister() {
+    setRegisterOpened(true);
+  }
+
+  function closeRegister() {
+    setRegisterOpened(false);
+  }
+
   return (
     <AppShell
       styles={{
@@ -94,44 +115,44 @@ function HomePage() {
               height: "100%",
             }}
           >
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
+            <Group>
+              <IconShoppingCart fill="white" />
+            </Group>
+
+            <Group>
+              <ShoppingCart
+                selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
               />
-            </MediaQuery>
-
-            <IconShoppingCart fill="white" />
-
-            {/* <div style={{ position: "relative" }}>
-              <IconShoppingCart fill="blue" />
-              {selectedItems.length > 0 && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "-8px",
-                    right: "-8px",
-                    background: "red",
-                    color: "white",
-                    borderRadius: "50%",
-                    padding: "4px 8px",
-                    fontSize: "12px",
-                    fontWeight: "bold",
-                  }}
+              {user ? (
+                <Button
+                  size="sm"
+                  style={{ marginRight: "1rem" }}
+                  onClick={signOut}
                 >
-                  {selectedItems.length}
-                </div>
+                  Odjavi se
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  style={{ marginRight: "1rem" }}
+                  onClick={openLogin}
+                >
+                  Prijavi se
+                </Button>
               )}
-            </div> */}
 
-            <ShoppingCart
-              selectedItems={selectedItems}
-              setSelectedItems={setSelectedItems}
-            />
+              <Button size="sm" onClick={openRegister}>
+                Registriraj se
+              </Button>
+            </Group>
           </div>
+          <LoginModal opened={loginOpened} close={closeLogin} user={user} />
+          <RegisterModal
+            opened={registereOpened}
+            close={closeRegister}
+            loginOpened={setLoginOpened}
+          />
         </Header>
       }
     >

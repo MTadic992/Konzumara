@@ -35,24 +35,30 @@ function ProductCard({ data, selectedItems, setSelectedItems }) {
     }
   };
 
-  console.log(selectedItems);
   return (
     <Card>
       <Card.Section>
-        <Image src={data.productImg} height={150} alt="voće" />
+        <Image
+          src={
+            "https://iks-portal.info/media/k2/items/cache/fd751459bb160ddea7151d8faaaa5b2c_L.jpg"
+          }
+          height={150}
+          alt="voće"
+        />
       </Card.Section>
 
+      <Text weight={500}>{data.title}</Text>
       <Group position="apart" mt="md" mb="xs">
-        <Text weight={500}>{data.Name}</Text>
-        <Badge color="pink" variant="light">
-          Sniženje
-        </Badge>
+        {data.is_sale && (
+          <Badge color="pink" variant="light">
+            Sniženje
+          </Badge>
+        )}
+
+        <Text size="sm" color="dimmed">
+          {data.price}
+        </Text>
       </Group>
-
-      <Text size="sm" color="dimmed">
-        {data.price}
-      </Text>
-
       <Button
         variant="light"
         color="blue"

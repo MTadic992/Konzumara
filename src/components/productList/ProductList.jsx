@@ -1,18 +1,34 @@
-import { Grid } from "@mantine/core";
+import { Button, Grid } from "@mantine/core";
 import ProductCard from "../productCard/ProductCard";
-import LoadMoreButton from "../loadMore/LoadMore";
-import React from "react";
 
-export default function ProductList({
-  data,
-  loadMore,
-  selectedItems,
-  setSelectedItems,
-}) {
+import React, { useEffect, useState } from "react";
+import { supabase } from "../../config";
+
+export default function ProductList({ selectedItems, setSelectedItems }) {
+  const [fetchError, setFetchError] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loadMoreProudcts, setLoadMoreProducts] = useState(7);
+  const fetchProducts = async () => {
+    const { data, error } = await supabase
+      .from("products")
+      .select()
+      .range(0, loadMoreProudcts);
+    setProducts(data);
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, [loadMoreProudcts]);
+
+  console.log(products);
+
+  function LoadMore() {
+    setLoadMoreProducts(loadMoreProudcts + 8);
+  }
+
   return (
     <div>
       <Grid columns={4} gutter="xl" m={10}>
-        {data?.map((product) => {
+        {products?.map((product) => {
           return (
             <Grid.Col key={product.id} span={1}>
               <ProductCard
@@ -24,7 +40,9 @@ export default function ProductList({
           );
         })}
       </Grid>
-      <LoadMoreButton onClick={loadMore} />
+      <Button variant="filled" color="blue" size="sm" onClick={LoadMore}>
+        Učitaj više
+      </Button>
     </div>
   );
 }

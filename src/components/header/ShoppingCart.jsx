@@ -2,33 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Button, Badge, Group } from "@mantine/core";
 
 import CartDrawer from "../drawer/Drawer";
-import LoginModal from "../loginModal/LoginModal";
-import RegisterModal from "../registerModal/RegisterModal";
 
 function ShoppingCart({ selectedItems, setSelectedItems }) {
-  const [loginOpened, setLoginOpened] = useState(false);
-  const [registereOpened, setRegisterOpened] = useState(false);
   const [opened, setOpened] = useState(false);
   const [cartItems, setCartItems] = useState();
 
-  function openLogin() {
-    setLoginOpened(true);
-  }
-
-  function closeLogin() {
-    setLoginOpened(false);
-  }
-
-  function openRegister() {
-    setRegisterOpened(true);
-  }
-
-  function closeRegister() {
-    setRegisterOpened(false);
-  }
-
   const open = () => {
-    console.log(opened);
     setOpened(true);
   };
 
@@ -46,12 +25,6 @@ function ShoppingCart({ selectedItems, setSelectedItems }) {
           </Badge>
           Košarica
         </Button>
-        <Button size="sm" style={{ marginRight: "1rem" }} onClick={openLogin}>
-          Prijavi se
-        </Button>
-        <Button size="sm" onClick={openRegister}>
-          Registriraj se
-        </Button>
       </Group>
       <CartDrawer
         opened={opened}
@@ -59,8 +32,6 @@ function ShoppingCart({ selectedItems, setSelectedItems }) {
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
       />
-      <LoginModal opened={loginOpened} close={closeLogin} />
-      <RegisterModal opened={registereOpened} close={closeRegister} />
     </div>
   );
 }

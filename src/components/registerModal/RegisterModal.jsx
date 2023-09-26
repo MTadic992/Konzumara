@@ -8,10 +8,11 @@ import {
   Checkbox,
   Group,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, yupResolver } from "@mantine/form";
 import { supabase } from "../../config";
+import { REGISTER_SCHEMA } from "../schema";
 
-function RegisterModal({ opened, close }) {
+function RegisterModal({ opened, close, loginOpened }) {
   const form = useForm({
     initialValues: {
       full_name: "",
@@ -20,9 +21,7 @@ function RegisterModal({ opened, close }) {
       confirm_password: "",
       is_admin: false,
     },
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-    },
+    validate: yupResolver(REGISTER_SCHEMA),
   });
 
   const handleRegister = async () => {
@@ -38,7 +37,8 @@ function RegisterModal({ opened, close }) {
         },
       },
     });
-    console.log(error);
+    close();
+    loginOpened(true);
   };
 
   return (
@@ -80,7 +80,7 @@ function RegisterModal({ opened, close }) {
             />
             <Divider my="sm" />
             <Group>
-              <Button onClick={handleRegister} radius="lg">
+              <Button type="submit" onClick={handleRegister} radius="lg">
                 Registriraj se
               </Button>
               <Checkbox
