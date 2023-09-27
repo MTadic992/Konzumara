@@ -49,15 +49,24 @@ function ProductCard({ data, selectedItems, setSelectedItems }) {
 
       <Text weight={500}>{data.title}</Text>
       <Group position="apart" mt="md" mb="xs">
-        {data.is_sale && (
-          <Badge color="pink" variant="light">
-            Sniženje
-          </Badge>
-        )}
+        {data.is_sale ? (
+          <>
+            <Text size="sm" color="red">
+              {data.price}
+            </Text>
+            <Text size="sm" color="green">
+              {data.sale_price}
+            </Text>
 
-        <Text size="sm" color="dimmed">
-          {data.price}
-        </Text>
+            <Badge color="green" variant="light">
+              Sniženje
+            </Badge>
+          </>
+        ) : (
+          <Text size="sm" color="black">
+            {data.price}
+          </Text>
+        )}
       </Group>
       <Button
         variant="light"

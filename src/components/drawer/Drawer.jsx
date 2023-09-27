@@ -1,6 +1,5 @@
 import { Drawer, Button, Stack, Text, Group } from "@mantine/core";
 import ProductCard from "../productCard/ProductCard";
-import { useEffect, useState } from "react";
 
 function CartDrawer({
   data,
@@ -35,22 +34,28 @@ function CartDrawer({
       }),
     );
     const updatedItem = selectedItems.find((item) => item.id === id);
-    updatedItem.quantity += 1;
-    localStorage.setItem(`cartItems${id}`, JSON.stringify(updatedItem));
+
+    localStorage.setItem(
+      `cartItems${id}`,
+      JSON.stringify({ ...updatedItem, quantity: updatedItem.quantity + 1 }),
+    );
   };
 
   const handleRemoveOne = (id) => {
     setSelectedItems((prevItems) =>
       prevItems.map((item) => {
-        if (item.id === id && item.quantity > 1) {
+        if (item.id === id && item.quantity) {
           return { ...item, quantity: item.quantity - 1 };
         }
         return item;
       }),
     );
     const updatedItem = selectedItems.find((item) => item.id === id);
-    updatedItem.quantity += 1;
-    localStorage.setItem(`cartItems${id}`, JSON.stringify(updatedItem));
+
+    localStorage.setItem(
+      `cartItems${id}`,
+      JSON.stringify({ ...updatedItem, quantity: updatedItem.quantity - 1 }),
+    );
   };
 
   const getStorageData = () => {

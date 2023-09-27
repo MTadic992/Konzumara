@@ -7,7 +7,7 @@ import {
   Divider,
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
-import { supabase } from "../../config";
+
 import { LOGIN_SCHEMA } from "../schema";
 import { useNavigate } from "react-router-dom";
 import React from "react";

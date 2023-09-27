@@ -10,27 +10,24 @@ import {
   Button,
 } from "@mantine/core";
 import ShoppingCart from "./header/ShoppingCart";
-import { PRODUCTS } from "../data";
 import ProductList from "../components/productList/ProductList";
 import { IconShoppingCart } from "@tabler/icons-react";
 import LoginModal from "../components/loginModal/LoginModal";
 import RegisterModal from "../components/registerModal/RegisterModal";
 import { AuthContext } from "../context/AuthProvider";
+import { supabase } from "../config";
 
 function HomePage() {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
-  const [displayedProducts, setDisplayedProducts] = useState(8);
+
   const [selectedItems, setSelectedItems] = useState([]);
   const [loginOpened, setLoginOpened] = useState(false);
   const [registereOpened, setRegisterOpened] = useState(false);
   const { user, signOut } = useContext(AuthContext);
-
-  const loadMoreProudcts = () => {
-    setDisplayedProducts((prev) => prev + 8);
-  };
-
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [more, setMore] = useState(7);
+  const [sortType, setSortType] = useState("");
+  const [countPages, setCountPages] = useState(0);
+  const [products, setProducts] = useState([]);
 
   const [cartItems, setCartItems] = useState(selectedItems);
 
@@ -45,33 +42,44 @@ function HomePage() {
     return items;
   };
 
+  function handleSetMore() {
+    setMore(more + 8);
+  }
+
+  useEffect(() => {
+    const fetch = async () => {
+      let query = supabase.from("products").select("*", { count: "exact" });
+      if (sortType === "NAJSTARIJE -> NAJNOVIJE") {
+        query = query.order("created_at", { ascending: true });
+      }
+      if (sortType === "NAJNOVIJE -> NAJSTARIJE") {
+        query = query.order("created_at", { ascending: false });
+      }
+      if (sortType === "A -> Z") {
+        query = query.order("title", { ascending: true });
+      }
+      if (sortType === "Z -> A") {
+        query = query.order("title", { ascending: false });
+      }
+      if (sortType === "NAJSKUPLJE -> NAJJEFTINIJE") {
+        query = query.order("price", { ascending: false });
+      }
+      if (sortType === "NAJJEFTINIJE -> NAJSKUPLJE") {
+        query = query.order("price", { ascending: true });
+      }
+      const { data, error, count } = await query.range(0, more);
+      setProducts(data);
+      setCountPages(count);
+    };
+    fetch();
+  }, [more, sortType]);
+
   useEffect(() => {
     const savedCartItems = getStorageData();
     if (savedCartItems) {
       setSelectedItems(savedCartItems);
     }
   }, []);
-
-  const sortedProducts = sortProducts(selectedOption, PRODUCTS);
-
-  function sortProducts(option, products) {
-    switch (option) {
-      case "option1":
-        return products.slice().sort((a, b) => a.Name.localeCompare(b.Name));
-      case "option2":
-        return products.slice().sort((a, b) => b.Name.localeCompare(a.Name));
-      case "option3":
-        return products.slice().sort((a, b) => b.price - a.price);
-      case "option4":
-        return products.slice().sort((a, b) => a.price - b.price);
-      case "option5":
-        return products.slice().sort((a, b) => b.Name.localeCompare(a.Name));
-      case "option6":
-        return products.slice().sort((a, b) => a.Name.localeCompare(b.Name));
-      default:
-        return products;
-    }
-  }
 
   function openLogin() {
     setLoginOpened(true);
@@ -163,24 +171,28 @@ function HomePage() {
           size="sm"
           radius="md"
           data={[
-            { value: "option1", label: "NAJSTARIJE -> NAJNOVIJE" },
-            { value: "option2", label: "NAJNOVIJE -> NAJSTARIJE" },
-            { value: "option3", label: "NAJSKUPLJE -> NAJJEFTINIJE" },
-            { value: "option4", label: "NAJJEFTINIJE -> NAJSKUPLJE" },
-            { value: "option5", label: "Z -> A" },
-            { value: "option6", label: "A -> Z" },
+            "NAJSTARIJE -> NAJNOVIJE",
+            "NAJNOVIJE -> NAJSTARIJE",
+            "A -> Z",
+            "Z -> A",
+            "NAJSKUPLJE -> NAJJEFTINIJE",
+            "NAJJEFTINIJE -> NAJSKUPLJE",
           ]}
-          value={selectedOption}
-          onChange={(value) => setSelectedOption(value)}
+          value={sortType}
+          onChange={setSortType}
+          clearable
         />
       </Group>
-      <ProductList
-        data={sortedProducts.slice(0, displayedProducts)}
-        loadMore={loadMoreProudcts}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
-        sortOption={selectedOption}
-      />
+      <ProductList data={products} />
+      <Button
+        variant="filled"
+        color="blue"
+        size="sm"
+        onClick={handleSetMore}
+        disabled={products.length === countPages}
+      >
+        Učitaj više
+      </Button>
     </AppShell>
   );
 }

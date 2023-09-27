@@ -2,9 +2,8 @@ import { Table, Button, Group } from "@mantine/core";
 import { useState } from "react";
 import "../modalAddProduct/index";
 import AddProduct from "../modalAddProduct/index";
-import { supabase } from "../../config";
+
 import { AdminTableRow } from "./AdminTableRow";
-import { Link } from "react-router-dom";
 
 export default function AdminTable({ data, onDelete }) {
   const [addProduct, setAddProduct] = useState(false);
@@ -23,7 +22,9 @@ export default function AdminTable({ data, onDelete }) {
   return (
     <>
       <Group justify="space-between">
-        <Button onClick={addNewProduct}>Add new product</Button>
+        <Button mt={10} onClick={addNewProduct}>
+          Dodaj novi proizvod
+        </Button>
       </Group>
       <Table highlightOnHover striped>
         <thead>
