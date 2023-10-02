@@ -21,9 +21,9 @@ function ShoppingCart({ selectedItems, setSelectedItems }) {
           onClick={open}
         >
           <Badge color="red" size="sm" style={{ marginRight: "0.5rem" }}>
-            {selectedItems.length}
+            {selectedItems?.length}
           </Badge>
-          Košarica
+          Shopping Cart
         </Button>
       </Group>
       <CartDrawer

@@ -14,7 +14,7 @@ import {
 import { useForm, yupResolver } from "@mantine/form";
 import { useToggle } from "@mantine/hooks";
 import { supabase } from "../../config";
-import { REGISTER_SCHEMA } from "../schema";
+import { ADD_PRODUCT } from "../schema";
 
 export default function AddProduct({ isOpened, onClose }) {
   const [isOnSale, toggle] = useToggle([false, true]);
@@ -30,13 +30,13 @@ export default function AddProduct({ isOpened, onClose }) {
       category: "",
     },
 
-    validate: yupResolver(REGISTER_SCHEMA),
+    validate: yupResolver(ADD_PRODUCT),
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("products")
       .insert([
         {
@@ -50,7 +50,7 @@ export default function AddProduct({ isOpened, onClose }) {
       ])
       .select();
 
-    console.log("Turbo top", form[1]);
+  
     form.reset();
     onClose();
     toggle();
@@ -59,9 +59,7 @@ export default function AddProduct({ isOpened, onClose }) {
   return (
     <>
       <Modal opened={isOpened} onClose={onClose} centered>
-        <Title order={1} color="#FF8A65">
-          Add a new product
-        </Title>
+        <Title order={1}>Add a new product</Title>
         <Stack justify="space-between">
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <TextInput
@@ -107,13 +105,13 @@ export default function AddProduct({ isOpened, onClose }) {
             <Select
               creatable
               label="Select one category"
-              placeholder="Fruit"
+              placeholder="Piće"
               required
-              data={["React", "Angular", "Vue", "Svelte"]}
+              data={["Voće", "Povrće", "Piće"]}
               value={form?.values.category}
               {...form.getInputProps("category")}
             />
-            <Button type="submit" onClick={handleSubmit}>
+            <Button mt={10} type="submit" onClick={handleSubmit}>
               Add product
             </Button>
           </form>

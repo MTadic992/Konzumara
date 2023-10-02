@@ -29,17 +29,20 @@ function HomePage() {
   const [countPages, setCountPages] = useState(0);
   const [products, setProducts] = useState([]);
 
-  const [cartItems, setCartItems] = useState(selectedItems);
-
   const getStorageData = () => {
-    const items = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key.includes("cartItems")) {
-        items.push(JSON.parse(localStorage.getItem(key)));
-      }
-    }
-    return items;
+    // const items = [];
+    if (!localStorage.cart) return [];
+
+    return Object.values(JSON.parse(localStorage.cart));
+    // console.log(typeof JSON.parse(localStorage.cart), "local");
+    // for (let i = 0; i < localStorage.length; i++) {
+    //   const key = localStorage.key(i);
+    //   if (key.includes("cartItem")) {
+    //     items.push(JSON.parse(localStorage.getItem(key)));
+    //   }
+    // }
+    // console.log(items, "fetch");
+    // return items;
   };
 
   function handleSetMore() {
@@ -138,7 +141,7 @@ function HomePage() {
                   style={{ marginRight: "1rem" }}
                   onClick={signOut}
                 >
-                  Odjavi se
+                  Sign out
                 </Button>
               ) : (
                 <Button
@@ -146,12 +149,13 @@ function HomePage() {
                   style={{ marginRight: "1rem" }}
                   onClick={openLogin}
                 >
-                  Prijavi se
+                  Sign in
                 </Button>
               )}
 
               <Button size="sm" onClick={openRegister}>
-                Registriraj se
+                {}
+                Register
               </Button>
             </Group>
           </div>
@@ -165,9 +169,9 @@ function HomePage() {
       }
     >
       <Group>
-        <Text size="xl">PROIZVODI</Text>
+        <Text size="xl">PRODUCTS</Text>
         <Select
-          placeholder="Sortiraj"
+          placeholder="Sort"
           size="sm"
           radius="md"
           data={[
@@ -183,7 +187,7 @@ function HomePage() {
           clearable
         />
       </Group>
-      <ProductList data={products} />
+      <ProductList data={products} setSelectedItems={setSelectedItems} />
       <Button
         variant="filled"
         color="blue"
@@ -191,7 +195,7 @@ function HomePage() {
         onClick={handleSetMore}
         disabled={products.length === countPages}
       >
-        Učitaj više
+        Load more
       </Button>
     </AppShell>
   );

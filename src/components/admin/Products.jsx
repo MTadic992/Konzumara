@@ -1,10 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import {
   AppShell,
   Navbar,
   Header,
   Footer,
-  Text,
   MediaQuery,
   Burger,
   useMantineTheme,
@@ -18,7 +17,7 @@ import {
 import AdminTable from "../../components/productItems/AdminTable";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../config";
-import { AuthContext } from "../../context/AuthProvider";
+
 import { SearchBar } from "../productItems/SearchBar";
 
 export default function AdminProducts() {
@@ -71,15 +70,14 @@ export default function AdminProducts() {
     const { data, error } = await supabase
       .from("products")
       .delete()
-      .eq("id", id)
-      .select();
+      .eq("id", id);
     if (error) {
       throw new Error(error.message);
     }
   }
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, searchQuery]);
+  }, [currentPage, searchQuery, onDelete]);
 
   return (
     <AppShell
@@ -100,18 +98,18 @@ export default function AdminProducts() {
           hidden={!opened}
           width={{ sm: 200, lg: 300 }}
         >
-          <Title color="red">Proizvodi</Title>
+          <Title color="red">Products</Title>
           <Stack spacing={20}>
             <Link to="/admin/products">
-              <Button>Proizvodi</Button>
+              <Button color="yellow">Products</Button>
             </Link>
 
             <Link to="/admin/categories">
-              <Button>Kategorije</Button>
+              <Button color="yellow">Categories</Button>
             </Link>
 
             <Link to="/admin/orders">
-              <Button>Narudžbe</Button>
+              <Button color="yellow">Orders</Button>
             </Link>
           </Stack>
         </Navbar>
@@ -132,9 +130,9 @@ export default function AdminProducts() {
             }}
           >
             <Group>
-              <Title color="red">Admin Proizvodi</Title>
-              <Button radius="lg" size="xs" onClick={handleClick}>
-                Povratak
+              <Title color="red">Admin products</Title>
+              <Button color="red" radius="lg" size="xs" onClick={handleClick}>
+                Back
               </Button>
             </Group>
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>

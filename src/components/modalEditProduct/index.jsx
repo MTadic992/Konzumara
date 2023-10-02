@@ -117,9 +117,7 @@ export default function EditProduct({
   return (
     <>
       <Modal opened={isOpened} onClose={onClose} centered>
-        <Title order={1} color="#FF8A65">
-          Edit product named {title}
-        </Title>
+        <Title order={1}>Edit product named {title}</Title>
         <Stack justify="space-between">
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <TextInput
@@ -179,7 +177,7 @@ export default function EditProduct({
               value={form?.values.category}
               {...form.getInputProps("category")}
             />
-            <Button type="button" onClick={updateProduct}>
+            <Button mt={10} type="button" onClick={updateProduct}>
               Edit product
             </Button>
           </form>

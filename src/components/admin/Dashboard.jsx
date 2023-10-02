@@ -47,13 +47,13 @@ export default function AdminDashboard() {
         >
           <Stack spacing={20}>
             <Link to="products">
-              <Button>Products</Button>
+              <Button color="yellow">Products</Button>
             </Link>
             <Link to="categories">
-              <Button>Categories</Button>
+              <Button color="yellow">Categories</Button>
             </Link>
             <Link to="orders">
-              <Button>Orders</Button>
+              <Button color="yellow">Orders</Button>
             </Link>
           </Stack>
         </Navbar>
@@ -82,9 +82,9 @@ export default function AdminDashboard() {
                 mr="xl"
               />
             </MediaQuery>
-            <Title color="red">Admin Pages</Title>
-            <Button radius="lg" onClick={handleClick}>
-              Odjavi se
+            <Title color="red">Admin page</Title>
+            <Button color="red" radius="lg" onClick={handleClick}>
+              Sign Out
             </Button>
           </div>
         </Header>
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
     >
       <Image
         radius="md"
-        src="https://images.unsplash.com/photo-1688920556232-321bd176d0b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80"
+        src="https://arhitehnicar.hr/wp-content/uploads/2019/03/IZRADA-I-VODENJE-KALKULACIJA-U-GRADITELJSTVU-ANALIZA-CIJENA-750x440.jpg"
       />
       <Outlet />
     </AppShell>

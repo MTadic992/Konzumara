@@ -61,6 +61,7 @@ const AuthProvider = ({ children }) => {
       }
     });
     supabase.auth.onAuthStateChange((event, session) => {
+      console.log(session, "onstate change");
       if (event === "SIGNED_IN") {
         setUser(session.user);
         setIsLoading(false);

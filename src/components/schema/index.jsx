@@ -26,3 +26,7 @@ export const ADD_PRODUCT = Yup.object().shape({
     "Please select a category or create a new one",
   ),
 });
+
+export const ADD_CATEGORY = Yup.object().shape({
+  name: Yup.string().required("Required"),
+});

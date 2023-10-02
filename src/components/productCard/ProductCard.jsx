@@ -1,9 +1,10 @@
 import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
 
-function ProductCard({ data, selectedItems, setSelectedItems }) {
-  const handleClick = () => {
-    const existingItem = selectedItems.find((item) => item.id === data.id);
-
+function ProductCard({ data, onHandleAdd, isDrawer }) {
+  const handleClick = (data) => {
+    console.log(selectedItems);
+    const existingItem = selectedItems?.find((item) => item.id === data.id);
+    console.log(existingItem);
     if (existingItem) {
       // Ako je proizvod već u košarici, povećaj količinu
       setSelectedItems((prevItems) =>
@@ -27,13 +28,13 @@ function ProductCard({ data, selectedItems, setSelectedItems }) {
         ...prevValues,
         { ...data, quantity: 1 },
       ]);
-
       localStorage.setItem(
         `cartItems${data.id}`,
         JSON.stringify({ ...data, quantity: +1 }),
       );
     }
   };
+  // console.log(data, "cart");
 
   return (
     <Card>
@@ -47,37 +48,40 @@ function ProductCard({ data, selectedItems, setSelectedItems }) {
         />
       </Card.Section>
 
-      <Text weight={500}>{data.title}</Text>
+      <Text weight={500}>{data?.title}</Text>
       <Group position="apart" mt="md" mb="xs">
-        {data.is_sale ? (
+        {data?.is_sale ? (
           <>
             <Text size="sm" color="red">
-              {data.price}
+              {data?.price}
             </Text>
             <Text size="sm" color="green">
-              {data.sale_price}
+              {data?.sale_price}
             </Text>
 
             <Badge color="green" variant="light">
-              Sniženje
+              Sale
             </Badge>
           </>
         ) : (
           <Text size="sm" color="black">
-            {data.price}
+            {data?.price}
           </Text>
         )}
       </Group>
-      <Button
-        variant="light"
-        color="blue"
-        fullWidth
-        mt="md"
-        radius="md"
-        onClick={handleClick}
-      >
-        Košarica
-      </Button>
+
+      {!isDrawer && (
+        <Button
+          variant="light"
+          color="blue"
+          fullWidth
+          mt="md"
+          radius="md"
+          onClick={() => onHandleAdd(data)}
+        >
+          Add to Cart
+        </Button>
+      )}
     </Card>
   );
 }

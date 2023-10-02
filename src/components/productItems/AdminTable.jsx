@@ -4,26 +4,28 @@ import "../modalAddProduct/index";
 import AddProduct from "../modalAddProduct/index";
 
 import { AdminTableRow } from "./AdminTableRow";
+import AddCategory from "../modalAddCategories";
 
 export default function AdminTable({ data, onDelete }) {
   const [addProduct, setAddProduct] = useState(false);
+  const [openCategory, setOpenCategory] = useState(false);
 
   function addNewProduct() {
-    console.log(addProduct);
     setAddProduct(true);
-    console.log(addProduct);
   }
 
   function closeNewProduct() {
     setAddProduct(false);
-    console.log(addProduct);
   }
 
   return (
     <>
       <Group justify="space-between">
         <Button mt={10} onClick={addNewProduct}>
-          Dodaj novi proizvod
+          Add new product
+        </Button>
+        <Button mt={10} onClick={() => setOpenCategory(true)}>
+          Add new category
         </Button>
       </Group>
       <Table highlightOnHover striped>
@@ -52,6 +54,7 @@ export default function AdminTable({ data, onDelete }) {
         </tbody>
       </Table>
       <AddProduct isOpened={addProduct} onClose={closeNewProduct} />
+      <AddCategory isOpened={openCategory} onClose={setOpenCategory} />
     </>
   );
 }

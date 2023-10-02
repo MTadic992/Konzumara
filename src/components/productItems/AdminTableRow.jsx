@@ -17,7 +17,7 @@ export function AdminTableRow({ onDelete, product }) {
     <>
       <tr>
         <td>
-          <Text color="#FF8A65" size="lg">
+          <Text color="Black" size="lg">
             {product.title}
           </Text>
         </td>
